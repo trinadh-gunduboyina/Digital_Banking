@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--<header>-->
+<!--        <a href="{{ url_for('ecommerce') }}">-->
+<!--            <button id="ecommerce">Ecommerce</button>-->
+<!--        </a>-->
+<!--    </header>-->
+<!--&lt;!&ndash; Added Code header &ndash;&gt;-->
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <title>Login</title>
+<!--   &lt;!&ndash; Added Code from here style &ndash;&gt;-->
+<!--    <style>-->
+<!--        header {-->
+<!--            display: flex;-->
+<!--            justify-content: flex-end; /* Aligns content to the right */-->
+<!--            padding: 10px;-->
+<!--            background-color: #f1f1f1; /* Optional background for header */-->
+<!--        }-->
+
+<!--        #ecommerce {-->
+<!--            padding: 10px 20px;-->
+<!--            background-color: #007bff; /* Button background color */-->
+<!--            color: white; /* Button text color */-->
+<!--            border: none;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--            font-size: 16px;-->
+<!--        }-->
+
+<!--        #ecommerce:hover {-->
+<!--            background-color: #0056b3; /* Darker shade on hover */-->
+<!--        }-->
+<!--    </style>-->
+<!--&lt;!&ndash; Added Code until here &ndash;&gt;-->
+
+   </head>
+<body>
+
+<div class="login-container">
+    <h1>Digital Banking </h1>
+    <h2>Login</h2>
+<!--    <img src="{{ url_for('static', filename='bank.jpg') }}" alt="Bank Image" class="bank-image">-->
+    <form method="POST" action="/login">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/register">Register</a></p>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <script>
+          window.onload = function() {
+            {% for category, message in messages %}
+              alert("{{ message }}");  // Display the message in a popup
+            {% endfor %}
+          };
+        </script>
+      {% endif %}
+    {% endwith %}
+</body>
+
+<footer>
+    <a href="{{ url_for('ecommerce') }}">
+        <button>Visit E-commerce Site</button>
+    </a>
+</footer>
+
+</html>

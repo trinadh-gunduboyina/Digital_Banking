@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My E-commerce Store</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='ecommerce.css') }}">
+</head>
+<body>
+<header>
+    <h1>My E-commerce Store</h1>
+    <nav>
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Products</a></li>
+            <li><a href="">Cart</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <h2>Featured Products</h2>
+    <section class="featured-products">
+
+        <div class="product">
+            <img src="{{ url_for('static', filename='iphone.jpeg') }}" alt="Product 1">
+            <h3>IPhone</h3>
+            <p>Short description of Product 1.</p>
+            <p>Price: $300.00</p>
+            <a href="{{ url_for('payment', price='300.00') }}">
+                <button class="buy-now">Buy Now</button>
+            </a>
+        </div>
+        <div class="product">
+            <img src="{{ url_for('static', filename='macbook.jpeg') }}" alt="Product 2">
+            <h3>Macbook Pro</h3>
+            <p>Short description of Product 2.</p>
+            <p>Price: $200.00</p>
+            <a href="{{ url_for('payment', price='200.00') }}">
+                <button class="buy-now">Buy Now</button>
+            </a>
+        </div>
+        <div class="product">
+            <img src="{{ url_for('static', filename='iwatch.jpeg') }}" alt="Product 3">
+            <h3>Apple Watch</h3>
+            <p>Short description of Product 3.</p>
+            <p>Price: $100.00</p>
+            <a href="{{ url_for('payment', price='100.00') }}">
+                <button class="buy-now">Buy Now</button>
+            </a>
+        </div>
+        <!-- Add more products as needed -->
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 My E-commerce Store</p>
+</footer>
+</body>
+</html>

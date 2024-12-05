@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles.css') }}">
+
+</head>
+<body>
+
+<header>
+    <h1>User Dashboard</h1>
+    <h1>Welcome, {{ username }}!</h1>
+    <a href="{{ url_for('logout') }}">
+        <button id="logout">Logout</button>
+    </a>
+</header>
+
+
+<div class="main-content">
+    <nav class="sidebar">
+        <ul>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="{{ url_for('transfer') }}">Make a Transfer</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <section id="account-summary">
+            <h2>Account Summary</h2>
+            <div class="summary-card">
+                <div>
+                    <img src="{{ url_for('static', filename='profile.gif') }}" style="
+                        height: 100px;
+                        border-radius: 20px;
+                        margin-right: 20px;
+                    ">
+                </div>
+                {% for account in accounts %}
+                <div class="account">
+                    <h3>Account Details</h3>
+                    <p>First Name: {{ account_details.fname or N/A }}</p>
+                    <p>Last Name: {{ account_details.lname or N/A }}</p>
+                    <h2>Bank: {{ account.bankName }}</h2>
+                    <p>Account Number: {{ account_details.accountNumber }}</p>
+                    <p>Debit Card Number: {{ account_details.debitCardNumber }}</p>
+                    <p>Address: {{ account_details.address }}</p>
+                    <p>SSN: {{ account_details.ssn }}</p>
+                    <p>Account Type: {{ account_details.accountType }}</p>
+                </div>
+                {% endfor %}
+                <h3>Account Balance:</h3>
+                <p id="account-balance">${{ account_details.balance }}</p>
+            </div>
+        </section>
+
+        <section id="transaction-history">
+            <h2>Transaction History</h2>
+            <table>
+                <tr>
+                    <th>Date Time</th>
+                    <th>Type</th>
+                    <th>Credit</th>
+                    <th>Debit</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                </tr>
+                {% for transaction in transactions %}
+                {% if not (transaction.type=='Transfer Debit' and transaction.receiverAccount==account_details.accountNumber) %}
+                <tr>
+                    <td>{{ transaction.dateTime }}</td>
+                    <td>{{ transaction.type }}</td>
+                    <td style="color: #0cf30c; font-weight: bold;">
+                        {% if transaction.amount > 0 %}$ {{ transaction.amount }}{% else %} - {% endif %}
+                    </td>
+                    <td style="color: #ff0000; font-weight: bold;">
+                        {% if transaction.amount < 0 %}$ {{ -transaction.amount }}{% else %} - {% endif %}
+                    </td>
+                    <td>
+                        {% if transaction.senderAccount %}
+                        <!-- Display sender's account number or username if available -->
+                        {{ transaction.senderAccount }}
+                        {% elif transaction.accountId %}
+                        <!-- Display sender's account number or username if available -->
+                        {{ transaction.accountId }}
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if transaction.receiverAccount %}
+                        <!-- Display receiver's account number or username if available -->
+                        {{ transaction.receiverAccount }}
+                        {% elif transaction.accountId %}
+                        <!-- Display sender's account number or username if available -->
+                        {{ transaction.accountId }}
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </section>
+
+    </div>
+</div>
+<script src="dashboard.js"></script> <!-- Link to your JavaScript file for interactivity -->
+</body>
+</html>

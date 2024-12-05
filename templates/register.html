@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='register.css') }}">
+    <title>Registration</title>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .error-border {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>Registration</h1>
+    <form method="POST" action="/register" onsubmit="return validateForm()">
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" required placeholder="Enter First Name">
+        <span id="fnameError" class="error-message"></span><br><br>
+
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" required placeholder="Enter Last Name">
+        <span id="lnameError" class="error-message"></span><br><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required placeholder="Enter Date of Birth">
+        <span id="dobError" class="error-message"></span><br><br>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required placeholder="Enter Address">
+        <span id="addressError" class="error-message"></span><br><br>
+
+        <label for="contact">Contact:</label>
+        <input type="tel" id="contact" name="contact" pattern="[0-9]{10}" maxlength="10" required placeholder="Enter contact number">
+        <span id="contactError" class="error-message"></span><br><br>
+
+        <label for="ssn">SSN:</label>
+        <input type="password" id="ssn" name="ssn" pattern="[0-9]{9}" maxlength="9" required placeholder="Enter SSN">
+        <span id="ssnError" class="error-message"></span><br><br>
+
+        <label for="bank_id">Choose a Bank:</label>
+        <select name="bank_id" id="bank_id">
+            {% for bank in banks %}
+            <option value="{{ bank._id }}">{{ bank.name }}</option>
+            {% endfor %}
+        </select>
+        <span id="bankIdError" class="error-message"></span><br><br>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required placeholder="Enter Username">
+        <span id="usernameError" class="error-message"></span><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="Enter Password">
+        <span id="passwordError" class="error-message"></span><br><br>
+
+        <label for="cpassword">Confirm Password:</label>
+        <input type="password" id="cpassword" name="cpassword" required placeholder="Re-enter Password">
+        <span id="cpasswordError" class="error-message"></span><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login">Log in</a></p>
+</div>
+
+<script>
+    function validateForm() {
+        let isValid = true;
+
+        // Clear existing error messages
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = "");
+        document.querySelectorAll('input').forEach(el => el.classList.remove('error-border'));
+
+        // First Name validation
+        const fname = document.getElementById("fname").value.trim();
+        if (fname === "") {
+            document.getElementById("fnameError").textContent = "First name is required.";
+            document.getElementById("fname").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Last Name validation
+        const lname = document.getElementById("lname").value.trim();
+        if (lname === "") {
+            document.getElementById("lnameError").textContent = "Last name is required.";
+            document.getElementById("lname").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Date of Birth validation
+        const dob = document.getElementById("dob").value.trim();
+        if (dob === "") {
+            document.getElementById("dobError").textContent = "Date of birth is required.";
+            document.getElementById("dob").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Address validation
+        const address = document.getElementById("address").value.trim();
+        if (address === "") {
+            document.getElementById("addressError").textContent = "Address is required.";
+            document.getElementById("address").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Contact validation
+        const contact = document.getElementById("contact").value.trim();
+        if (!/^\d{10}$/.test(contact)) {
+            document.getElementById("contactError").textContent = "Contact number must be 10 digits.";
+            document.getElementById("contact").classList.add("error-border");
+            isValid = false;
+        }
+
+        // SSN validation
+        const ssn = document.getElementById("ssn").value.trim();
+        if (!/^\d{9}$/.test(ssn)) {
+            document.getElementById("ssnError").textContent = "SSN must be exactly 9 digits.";
+            document.getElementById("ssn").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Bank ID validation
+        const bankId = document.getElementById("bank_id").value.trim();
+        if (bankId === "") {
+            document.getElementById("bankIdError").textContent = "Please select a bank.";
+            document.getElementById("bank_id").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Username validation
+        const username = document.getElementById("username").value.trim();
+        if (username === "") {
+            document.getElementById("usernameError").textContent = "Username is required.";
+            document.getElementById("username").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Password validation
+        const password = document.getElementById("password").value.trim();
+        if (password.length < 8) {
+            document.getElementById("passwordError").textContent = "Password must be at least 8 characters.";
+            document.getElementById("password").classList.add("error-border");
+            isValid = false;
+        }
+
+        // Confirm Password validation
+        const cpassword = document.getElementById("cpassword").value.trim();
+        if (cpassword !== password) {
+            document.getElementById("cpasswordError").textContent = "Passwords do not match.";
+            document.getElementById("cpassword").classList.add("error-border");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+</script>
+</body>
+</html>

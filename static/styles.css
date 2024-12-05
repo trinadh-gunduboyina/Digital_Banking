@@ -1,0 +1,188 @@
+/* Reset some default browser styles */
+body{
+    height: 100vh;
+    background-image: url('/static/bank_bg.jpg');
+    background-size: cover; /* Make the image cover the entire screen */
+    background-position: center; /* Center the background image */
+    /*background-repeat: no-repeat;*/
+}
+
+
+
+h1, h2, p, ul, li, table {
+
+
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+/* Set a background color for the entire page */
+body {
+    background-color: #2069b5;
+    font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+header {
+    background-color: #252929;
+    color: rgb(253, 253, 253);
+    padding: 20px;
+    display: flex;
+justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+}
+
+header a{
+        text-decoration: none;
+    color: rgb(253, 253, 253);
+}
+
+/* Main container styles */
+.container {
+    width: -webkit-fill-available;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+     background-image: url('/static/bank_bg.jpg');
+    background-size: cover; /* Make the image cover the entire screen */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent tiling of the image */
+    *color: #fff; /* Default text color for better readability */
+    box-shadow: 0 0 10px rgb(37, 41, 41);
+    border-radius: 5px;
+}
+
+/* Account Summary styles */
+#account-summary {
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background-color: #508187a8;
+    color: white;
+    padding: 20px;
+    border: 1px solid #508187;
+    border-radius: 5px;
+    margin-bottom: 10px;
+        display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+.summary-card h3 {
+    color: rgb(129, 191, 218);
+}
+
+#account-balance {
+    font-size: 24px;
+    font-weight: bold;
+    color: #10c6ff;
+}
+
+#last-transaction {
+    color: #508187;
+}
+
+/* Transaction History table styles */
+#transaction-history {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid rgb(253, 253, 253);
+}
+
+table th {
+    background-color: #fdfdfd;
+    font-weight: bold;
+    color: #252929;
+}
+
+/* Logout button styles */
+#logout {
+    background-color: #cf0819;
+    color: rgb(253, 253, 253);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logout:hover {
+    background-color: #80373b;
+}
+
+
+.sidebar {
+    width: 200px; /* Adjust width as needed */
+    background-color: #252929;
+    height: 100vh; /* Full height */
+    padding-top: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    border-bottom: 1px solid #508187;
+}
+
+.sidebar ul li a {
+    color: rgb(253, 253, 253);
+    text-decoration: none;
+}
+
+.main-content {
+    display: flex;
+    flex-grow: 1;
+
+}
+main{
+    color: white;
+    margin: 20px;
+}
+
+.nav-admin ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #252929;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.nav-admin li {
+  float: left;
+}
+
+.nav-admin li a {
+  display: block;
+  color: rgba(6, 189, 230, 0.98);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.nav-admin li a:hover:not(.active) {
+  background-color: #252929;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+

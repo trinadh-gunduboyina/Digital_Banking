@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... head elements ... -->
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1><a href="{{url_for('admin_dashboard')}}">Admin Console</a></h1>
+    <h1>Welcome, {{ username }}!</h1>
+    <a href="{{ url_for('logout') }}"><button id="logout">Logout</button></a>
+    </header>
+<nav class="nav-admin">
+        <ul>
+                <li><a class="active" href="{{ url_for('manage_users') }}">Manage Users</a></li>
+                <li><a href="{{ url_for('view_transactions') }}">View Transactions</a></li>
+                <li><a href="{{ url_for('add_user') }}">Add Bank Officer or Admin</a></li>
+                <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li> <!-- New link for depositing money -->
+                <li><a href="{{ url_for('approve_users') }}">Approve Customers</a></li>
+
+                <!-- Add more admin-specific actions as needed -->
+            </ul>
+    </nav>
+<main>
+
+    <h2>Manage Users</h2>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.fname or user.name or 'N/A' }}</td>
+            <td>{{ user.lname or 'N/A' }}</td>
+           <td>
+    <a href="{{ url_for('edit_user', user_id=user._id) }}" style="color: white;">Edit</a>
+          </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+</main>
+
+<!-- ... footer ... -->
+</body>
+</html>

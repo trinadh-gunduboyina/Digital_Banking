@@ -1,0 +1,121 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: url('/static/bank_bg.jpg');
+    background-size: cover; /* Make the image cover the entire screen */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat;
+}
+
+header {
+    background-color: #1F1717;
+    color: rgb(253, 253, 253);
+    text-align: center;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+header h1 {
+    margin: 0;
+}
+
+/* Navigation and Actions */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a, .admin-actions a {
+    color: #252929;
+    text-decoration: none;
+}
+
+nav a:hover, .admin-actions a:hover {
+    text-decoration: underline;
+}
+
+/* Admin Actions Section */
+.admin-actions {
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    border-style: dotted;
+    border-color: #160ae2;
+    background-color: rgba(6, 189, 230, 0.98);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+        align-items: center;
+}
+
+.admin-actions h2 {
+    color: rgb(37, 41, 41);
+}
+
+.admin-actions ul {
+    padding-left: 20px;
+    list-style-type: disclosure-closed;
+}
+
+.admin-actions li {
+    margin-bottom: 10px;
+}
+
+/* Admin Summary Section */
+.admin-summary {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    margin: 20px;
+    background-color: rgba(6, 189, 230, 0.98);
+    border-radius: 5px;
+}
+
+.summary-item {
+    text-align: center;
+}
+
+.summary-item h3 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Reports Section */
+.reports {
+    background-color: rgba(6, 189, 230, 0.98);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+.reports h2 {
+    color: #333;
+}
+
+/* Logout Button */
+#logout {
+    background-color: #f44336;
+    color: rgb(253, 253, 253);
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logout:hover {
+    background-color: #d32f2f;
+}
+
+main{
+    margin: 20px;
+}

@@ -1,0 +1,78 @@
+/* styles.css */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.image-section {
+    background-image: url('transfer.jpeg');
+    background-size: contain;
+    background-position: center;
+    width: 50%;
+    height: 50vh;
+    background-repeat: no-repeat;
+}
+
+.form-section {
+    width: 50%;
+    padding: 2rem;
+}
+
+form {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+form h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin: 0.5rem 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.checkbox {
+    margin: 1rem 0;
+}
+
+.checkbox label {
+    display: inline;
+}
+
+button {
+    background: #CE5A67;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+account_name_display{
+    color: #CE5A67;
+}

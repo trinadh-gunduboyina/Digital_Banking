@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .success-message {
+            color: #0ce83e;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .transaction-details {
+            margin-top: 30px; /* Adjust margin to avoid overlap */
+            font-size: 18px;
+        }
+        .button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #3e95f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="success-message">Thank you for shopping with us!</h1>
+        <p>Your payment of ${{ amount }} has been successfully processed.</p>
+    </div>
+
+    <div class="transaction-details">
+        <p><strong>Transaction ID:</strong> {{ transaction_id }}</p>
+    </div>
+    <br><br>
+
+<div>
+    <a href="{{ url_for('ecommerce') }}" class="button">Continue Shopping</a>
+    </div>
+</body>

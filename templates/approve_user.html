@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... head elements ... -->
+    <title>Approve User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1><a href="{{url_for('admin_dashboard')}}">Admin Console</a></h1>
+    <h1>Welcome, {{ username }}!</h1>
+    <a href="{{ url_for('logout') }}"><button id="logout">Logout</button></a>
+    </header>
+<nav class="nav-admin">
+        <ul>
+                <li><a href="{{ url_for('manage_users') }}">Manage Users</a></li>
+                <li><a href="{{ url_for('view_transactions') }}">View Transactions</a></li>
+                <li><a href="{{ url_for('add_user') }}">Add Bank Officer or Admin</a></li>
+                <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li> <!-- New link for depositing money -->
+                <li><a class="active" href="{{ url_for('approve_users') }}">Approve Customers</a></li>
+
+                <!-- Add more admin-specific actions as needed -->
+            </ul>
+    </nav>
+    <main>
+        <h2>Approve User: {{ user.username }}</h2>
+        <form method="POST" action="{{ url_for('approve_user', user_id=user._id) }}">
+            <!-- Display user details in a non-editable way (you may use <p> or <span> tags) -->
+            <p>Username: {{ user.username }}</p>
+            <p>First Name: {{ user.fname }}</p>
+            <p>Last Name: {{ user.lname }}</p>
+            <p>Date of Birth: {{ user.dob }}</p>
+            <p>Bank: {{ bank.name }}</p>
+            <p>Address: {{ user.address }}</p>
+            <p>Contact: {{ user.contact }}</p>
+            <p>SSN: {{ user.ssn }}</p>
+            <!-- ... other user details ... -->
+
+            <!-- Account Type Selection -->
+            <label for="account_type">Account Type:</label>
+            <select name="account_type" id="account_type">
+                {% for category in account_types %}
+                <option value="{{ category.id }}">{{ category.type }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <!-- Overdraft Enable Option -->
+            <label for="enable_overdraft">Enable Overdraft:</label>
+            <input type="checkbox" id="enable_overdraft" name="enable_overdraft">
+            <br><br>
+
+            <button type="submit">Approve Account</button>
+        </form>
+    </main>
+
+    <!-- ... footer ... -->
+</body>
+</html>

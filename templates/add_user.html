@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+
+        <h1><a href="{{url_for('admin_dashboard')}}">Admin Console</a></h1>
+    <h1>Welcome, {{ username }}!</h1>
+    <a href="{{ url_for('logout') }}"><button id="logout">Logout</button></a>
+
+    </header>
+<nav class="nav-admin">
+        <ul>
+                <li><a href="{{ url_for('manage_users') }}">Manage Users</a></li>
+                <li><a href="{{ url_for('view_transactions') }}">View Transactions</a></li>
+                <li><a class="active" href="{{ url_for('add_user') }}">Add Bank Officer or Admin</a></li>
+                <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li> <!-- New link for depositing money -->
+                <li><a href="{{ url_for('approve_users') }}">Approve Customers</a></li>
+
+                <!-- Add more admin-specific actions as needed -->
+            </ul>
+    </nav>
+    <main>
+                <h1>Add New User</h1>
+    <br>
+        <form method="POST" action="{{ url_for('create_user') }}" class="user-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <label for="name">Name (for Bank Officers):</label>
+<input type="text" id="name" name="name"><br><br>
+
+            <label for="role">Role:</label>
+            <select id="role" name="role">
+                <option value="bankofficer">Bank Officer</option>
+                <option value="admin">Admin</option>
+            </select><br><br>
+
+            <button type="submit">Add User</button>
+        </form>
+    </main>
+
+    <footer>
+        <!-- Footer Content -->
+    </footer>
+</body>
+</html>
