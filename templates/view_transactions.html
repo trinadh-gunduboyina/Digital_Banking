@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ... head elements ... -->
     <title>View Transactions</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .filter-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .filter-container select {
+            margin-right: 10px;
+            padding: 5px;
+        }
+        .filter-container button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .filter-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1><a href="{{url_for('admin_dashboard')}}">Admin Console</a></h1>
+        <h1><a href="{{ url_for('admin_dashboard') }}">Admin Console</a></h1>
         <h1>Welcome, {{ username }}!</h1>
         <a href="{{ url_for('logout') }}"><button id="logout">Logout</button></a>
     </header>
@@ -18,11 +38,29 @@
             <li><a href="{{ url_for('add_user') }}">Add Bank Officer or Admin</a></li>
             <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li>
             <li><a href="{{ url_for('approve_users') }}">Approve Customers</a></li>
-            <!-- Add more admin-specific actions as needed -->
         </ul>
     </nav>
     <main>
         <h2>Transaction Logs</h2>
+
+        <!-- Filter Section -->
+        <div class="filter-container">
+            <form method="GET" action="{{ url_for('view_transactions') }}">
+                <label for="filter_type">Filter by:</label>
+                <select name="filter_type" id="filter_type">
+                    <option value="all" {% if filter_type == 'all' %}selected{% endif %}>All</option>
+                    <option value="credit" {% if filter_type == 'credit' %}selected{% endif %}>Credit</option>
+                    <option value="debit" {% if filter_type == 'debit' %}selected{% endif %}>Debit</option>
+                </select>
+                <label for="sort_order">Sort by Time:</label>
+                <select name="sort_order" id="sort_order">
+                    <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Newest First</option>
+                    <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Oldest First</option>
+                </select>
+                <button type="submit">Apply</button>
+            </form>
+        </div>
+
         <table>
             <tr>
                 <th>Transaction ID</th>
@@ -50,7 +88,5 @@
             {% endfor %}
         </table>
     </main>
-
-    <!-- ... footer ... -->
 </body>
 </html>

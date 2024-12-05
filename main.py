@@ -165,36 +165,47 @@ def approve_user(user_id):
     else:
         return redirect(url_for('login'))
 
+
 @app.route('/deposit_money', methods=['GET', 'POST'])
 def deposit_money():
     if 'username' in session and session['user_type'] == 'admin':
-        username=session['username']
+        username = session['username']
         if request.method == 'POST':
             account_number = request.form.get('account_number')
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
             deposit_amount = float(request.form.get('deposit_amount'))
 
-            # Fetch the account and update the balance
+            # Fetch the account and customer data
             account = db['accounts'].find_one({'accountNumber': account_number})
             if account:
-                new_balance = account['balance'] + deposit_amount
-                db['accounts'].update_one({'accountNumber': account_number}, {'$set': {'balance': new_balance}})
-                # Record the deposit transaction
-                transaction_credit = {
-                    "accountId": account_number,
-                    "senderAccount": "Bank Officer - " + session['username'],  # Identifies the bank officer
-                    "amount": round(deposit_amount, 2),
-                    "type": "Deposit",
-                    "dateTime": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                }
-                db['transactions'].insert_one(transaction_credit)
+                user = db['customers'].find_one({'_id': account['CustomerId']})
 
-                flash('Deposit successful', 'success')
+                # Check if the provided first and last name match the customer
+                if user and user.get('fname') == first_name and user.get('lname') == last_name:
+                    # Process deposit
+                    new_balance = account['balance'] + deposit_amount
+                    db['accounts'].update_one({'accountNumber': account_number}, {'$set': {'balance': new_balance}})
+
+                    # Record the deposit transaction
+                    transaction_credit = {
+                        "accountId": account_number,
+                        "senderAccount": "Bank Officer - " + session['username'],  # Identifies the bank officer
+                        "amount": round(deposit_amount, 2),
+                        "type": "Deposit",
+                        "dateTime": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                    db['transactions'].insert_one(transaction_credit)
+
+                    flash('Deposit successful', 'success')
+                else:
+                    flash('Customer name does not match account details', 'error')
             else:
                 flash('Account not found', 'error')
 
             return redirect(url_for('deposit_money'))
 
-        return render_template('deposit_money.html',username=username)
+        return render_template('deposit_money.html', username=username)
     else:
         return redirect(url_for('login'))
 
@@ -628,15 +639,27 @@ def delete_user(user_id):
         return redirect(url_for('manage_users'))
     else:
         return redirect(url_for('login'))
-
-
-@app.route('/view_transactions')
+@app.route('/view_transactions', methods=['GET'])
 def view_transactions():
     if 'username' in session and session['user_type'] == 'admin':
         username = session['username']
-        transactions = db['transactions'].find({}).sort('dateTime', -1)
 
-        # Enhance transactions with user name and separate credit/debit
+        # Get filters and sorting preferences from the request
+        filter_type = request.args.get('filter_type', 'all')
+        sort_order = request.args.get('sort_order', 'desc')
+
+        # Build query based on filter_type
+        query = {}
+        if filter_type == 'credit':
+            query['amount'] = {'$gt': 0}  # Positive amounts for credits
+        elif filter_type == 'debit':
+            query['amount'] = {'$lt': 0}  # Negative amounts for debits
+
+        # Fetch and sort transactions
+        sort_direction = -1 if sort_order == 'desc' else 1
+        transactions = db['transactions'].find(query).sort('dateTime', sort_direction)
+
+        # Enhance transactions with additional data
         enhanced_transactions = []
         for transaction in transactions:
             account = db['accounts'].find_one({'accountNumber': transaction['accountId']})
@@ -649,30 +672,31 @@ def view_transactions():
             else:
                 user_name = 'Unknown'
 
-            # Convert dateTime to a datetime object if it's not already
             if isinstance(transaction['dateTime'], str):
                 transaction_datetime = datetime.strptime(transaction['dateTime'], "%Y-%m-%d %H:%M:%S")
             else:
                 transaction_datetime = transaction['dateTime']
 
-            # Format dateTime to 12-hour format
-            formatted_date = transaction_datetime.strftime('%I:%M %p %d-%m-%Y')
-
+            formatted_date = transaction_datetime.strftime('%I:%M:%S %p %d-%m-%Y')
             transaction_data = {
                 '_id': transaction['_id'],
                 'accountId': transaction['accountId'],
-                'accountName': user_name,  # Add user name
+                'accountName': user_name,
                 'type': transaction['type'],
                 'amount': transaction['amount'],
-                'formattedDate': formatted_date  # Use formatted date
+                'formattedDate': formatted_date
             }
             enhanced_transactions.append(transaction_data)
 
-        return render_template('view_transactions.html', transactions=enhanced_transactions, username=username)
+        return render_template(
+            'view_transactions.html',
+            transactions=enhanced_transactions,
+            username=username,
+            filter_type=filter_type,
+            sort_order=sort_order
+        )
     else:
         return redirect(url_for('login'))
-
-
 
 @app.route('/add-user', methods=['GET'])
 def add_user():
@@ -682,33 +706,43 @@ def add_user():
     else:
         return redirect(url_for('login'))
 
-
-@app.route('/create-user', methods=['POST'])
+@app.route('/create_user', methods=['POST'])
 def create_user():
     if 'username' in session and session['user_type'] == 'admin':
-        username = request.form['username']
-        name = request.form.get('name')  # Add a name field in your form for bank officers
-        password = request.form['password']
-        role = request.form['role']
+        # Collect data from the form
+        username = request.form.get('username')
+        password = request.form.get('password')
+        name = request.form.get('name')
+        address = request.form.get('address')
+        contact = request.form.get('contact')
+        ssn = request.form.get('ssn')
+        id_number = request.form.get('id_number')
+        role = request.form.get('role')
+
+        # Ensure only "bankofficer" role can be added
+        if role != 'bankofficer':
+            flash('Admins can only add Bank Officers', 'error')
+            return redirect(url_for('add_user'))
+
+        # Hash the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        if role == 'bankofficer':
-            bank_officers_collection.insert_one({
-                "name": name,
-                "username": username,
-                "password": hashed_password,
-                "deposit": True  # Assuming all bank officers have deposit rights
-            })
-        elif role == 'admin':
-            admin_users_collection.insert_one({
-                "username": username,
-                "password": hashed_password
-            })
+        # Insert the new user into the bank officers collection
+        bank_officers_collection.insert_one({
+            "username": username,
+            "password": hashed_password,
+            "name": name,
+            "address": address,
+            "contact": contact,
+            "ssn": ssn,
+            "id_number": id_number,
+            "role": role
+        })
 
+        flash('Bank Officer added successfully', 'success')
         return redirect(url_for('admin_dashboard'))
     else:
         return redirect(url_for('login'))
-
     @app.route('/apply_overdraft_fee', methods=['POST'])
     def apply_overdraft_fee():
         now = datetime.now()
