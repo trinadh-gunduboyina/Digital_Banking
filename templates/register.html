@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static',filename='register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
     <title>Registration</title>
     <style>
         .error-message {
@@ -43,13 +43,10 @@
         <input type="password" id="ssn" name="ssn" pattern="[0-9]{9}" maxlength="9" required placeholder="Enter SSN">
         <span id="ssnError" class="error-message"></span><br><br>
 
-        <label for="bank_id">Choose a Bank:</label>
-        <select name="bank_id" id="bank_id">
-            {% for bank in banks %}
-            <option value="{{ bank._id }}">{{ bank.name }}</option>
-            {% endfor %}
-        </select>
-        <span id="bankIdError" class="error-message"></span><br><br>
+        <label for="bank_id">Bank:</label>
+        <select name="bank_id" id="bank_id" disabled>
+            <option value="66d6aa3e41d3ab778b27b6f5">American Express</option>
+        </select><br><br>
 
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required placeholder="Enter Username">
@@ -76,85 +73,7 @@
         document.querySelectorAll('.error-message').forEach(el => el.textContent = "");
         document.querySelectorAll('input').forEach(el => el.classList.remove('error-border'));
 
-        // First Name validation
-        const fname = document.getElementById("fname").value.trim();
-        if (fname === "") {
-            document.getElementById("fnameError").textContent = "First name is required.";
-            document.getElementById("fname").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Last Name validation
-        const lname = document.getElementById("lname").value.trim();
-        if (lname === "") {
-            document.getElementById("lnameError").textContent = "Last name is required.";
-            document.getElementById("lname").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Date of Birth validation
-        const dob = document.getElementById("dob").value.trim();
-        if (dob === "") {
-            document.getElementById("dobError").textContent = "Date of birth is required.";
-            document.getElementById("dob").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Address validation
-        const address = document.getElementById("address").value.trim();
-        if (address === "") {
-            document.getElementById("addressError").textContent = "Address is required.";
-            document.getElementById("address").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Contact validation
-        const contact = document.getElementById("contact").value.trim();
-        if (!/^\d{10}$/.test(contact)) {
-            document.getElementById("contactError").textContent = "Contact number must be 10 digits.";
-            document.getElementById("contact").classList.add("error-border");
-            isValid = false;
-        }
-
-        // SSN validation
-        const ssn = document.getElementById("ssn").value.trim();
-        if (!/^\d{9}$/.test(ssn)) {
-            document.getElementById("ssnError").textContent = "SSN must be exactly 9 digits.";
-            document.getElementById("ssn").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Bank ID validation
-        const bankId = document.getElementById("bank_id").value.trim();
-        if (bankId === "") {
-            document.getElementById("bankIdError").textContent = "Please select a bank.";
-            document.getElementById("bank_id").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Username validation
-        const username = document.getElementById("username").value.trim();
-        if (username === "") {
-            document.getElementById("usernameError").textContent = "Username is required.";
-            document.getElementById("username").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Password validation
-        const password = document.getElementById("password").value.trim();
-        if (password.length < 8) {
-            document.getElementById("passwordError").textContent = "Password must be at least 8 characters.";
-            document.getElementById("password").classList.add("error-border");
-            isValid = false;
-        }
-
-        // Confirm Password validation
-        const cpassword = document.getElementById("cpassword").value.trim();
-        if (cpassword !== password) {
-            document.getElementById("cpasswordError").textContent = "Passwords do not match.";
-            document.getElementById("cpassword").classList.add("error-border");
-            isValid = false;
-        }
+        // Add validation logic here if needed
 
         return isValid;
     }

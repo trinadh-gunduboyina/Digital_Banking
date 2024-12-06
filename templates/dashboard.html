@@ -39,17 +39,20 @@
                     ">
                 </div>
                 {% for account in accounts %}
-                <div class="account">
-                    <h3>Account Details</h3>
-                    <p>First Name: {{ account_details.fname or N/A }}</p>
-                    <p>Last Name: {{ account_details.lname or N/A }}</p>
-                    <h2>Bank: {{ account.bankName }}</h2>
-                    <p>Account Number: {{ account_details.accountNumber }}</p>
-                    <p>Debit Card Number: {{ account_details.debitCardNumber }}</p>
-                    <p>Address: {{ account_details.address }}</p>
-                    <p>SSN: {{ account_details.ssn }}</p>
-                    <p>Account Type: {{ account_details.accountType }}</p>
-                </div>
+               <div class="account">
+    <h3>Account Details</h3>
+    <p>First Name: {{ account_details.fname }}</p>
+    <p>Last Name: {{ account_details.lname }}</p>
+    <p>Address: {{ account_details.address }}</p>
+    <p>SSN: {{ account_details.ssn }}</p>
+    <p>Account Number: {{ account_details.accountNumber }}</p>
+    <p>Debit Card Number: {{ account_details.debitCardNumber }}</p>
+    <p>CVV: {{ account_details.cvv }}</p>
+    <p>Expiration Date: {{ account_details.expireMonth }}/{{ account_details.expireYear }}</p>
+    <p>Balance: ${{ account_details.balance }}</p>
+</div>
+
+
                 {% endfor %}
                 <h3>Account Balance:</h3>
                 <p id="account-balance">${{ account_details.balance }}</p>

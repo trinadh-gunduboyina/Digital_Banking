@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1><a href="{{url_for('admin_dashboard')}}">Admin Console</a></h1>
+        <h1><a href="{{ url_for('admin_dashboard') }}">Admin Console</a></h1>
         <h1>Welcome, {{ username }}!</h1>
         <a href="{{ url_for('logout') }}"><button id="logout">Logout</button></a>
     </header>
@@ -16,14 +16,16 @@
         <ul>
             <li><a href="{{ url_for('manage_users') }}">Manage Users</a></li>
             <li><a href="{{ url_for('view_transactions') }}">View Transactions</a></li>
-            <li><a class="active" href="{{ url_for('add_user') }}">Add Bank Officer or Admin</a></li>
+            {% if username == 'admin' %}
+                <li><a class="active" href="{{ url_for('add_user') }}">Add Bank Officer</a></li>
+            {% endif %}
             <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li>
             <li><a href="{{ url_for('approve_users') }}">Approve Customers</a></li>
         </ul>
     </nav>
     <main>
+        {% if username == 'admin' %}
         <h1>Add New Bank Officer</h1>
-        <br>
         <form method="POST" action="{{ url_for('create_user') }}" class="user-form">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br><br>
@@ -43,20 +45,14 @@
             <label for="ssn">SSN:</label>
             <input type="password" id="ssn" name="ssn" pattern="[0-9]{9}" maxlength="9" required placeholder="Enter 9-digit SSN"><br><br>
 
-            <label for="id_number">ID Number (Driver's License or State ID):</label>
-<input type="text" id="id_number" name="id_number"
-       pattern="[A-Z]{1}[0-9]{2}-[0-9]{2}-[0-9]{4}"
-       maxlength="10" required placeholder="L00-00-0000">
-<br><br>
-
-
-            <label for="role">Role:</label>
-            <select id="role" name="role" disabled>
-                <option value="bankofficer" selected>Bank Officer</option>
-            </select><br><br>
+            <label for="id_number">ID Number (10-digit):</label>
+            <input type="text" id="id_number" name="id_number" pattern="[0-9]{10}" maxlength="10" required placeholder="Enter 10-digit ID"><br><br>
 
             <button type="submit">Add Bank Officer</button>
         </form>
+        {% else %}
+        <h2>This functionality is restricted to the Admin user.</h2>
+        {% endif %}
     </main>
     <footer>
         <!-- Footer Content -->

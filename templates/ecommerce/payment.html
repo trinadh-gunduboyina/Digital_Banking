@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ... head elements ... -->
     <title>Payment</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style>
+     <style>
 body {
   font-family: Arial;
   font-size: 17px;
@@ -113,51 +112,90 @@ span.price {
 </style>
 </head>
 <body>
-
     <main>
         <h2>Payment</h2>
-        <form action="{{ url_for('process_payment') }}" method="post">
-<!--            <label for="Name">Name:</label>-->
-<!--            <input type="text" id="name" name="name" required><br><br>-->
-
-<!--            <label for="debitCardNumber">Debit Card Number:</label>-->
-<!--            <input type="text" id="debitCardNumber" name="debitCardNumber" required><br><br>-->
-
-<!--            <label for="cvv">CVV:</label>-->
-<!--            <input type="text" id="cvv" name="cvv" required><br><br>-->
-
-<!--<h3>Payment</h3>-->
+        <form id="payment-form" action="{{ url_for('process_payment') }}" method="post" onsubmit="return validatePaymentForm();">
             <label for="fname">Accepted Cards</label>
             <div class="icon-container">
-              <i class="fa fa-cc-visa" style="color:navy;"></i>
-              <i class="fa fa-cc-amex" style="color:blue;"></i>
-              <i class="fa fa-cc-mastercard" style="color:red;"></i>
-              <i class="fa fa-cc-discover" style="color:orange;"></i>
+                <i class="fa fa-cc-visa" style="color:navy;"></i>
+                <i class="fa fa-cc-amex" style="color:blue;"></i>
+                <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                <i class="fa fa-cc-discover" style="color:orange;"></i>
             </div>
             <label for="cname">Name on Card</label>
             <input type="text" id="cname" name="cardname" placeholder="Enter your name">
+            <span id="nameError" class="error-message"></span>
             <label for="debitCardNumber">Card number</label>
             <input type="text" id="debitCardNumber" name="debitCardNumber" required>
-            <label for="expmonth">Exp Month</label>
-            <input type="text" id="expmonth" name="expmonth" placeholder="September">
+            <span id="cardNumberError" class="error-message"></span>
+            <label for="expmonth">Exp Month (MM)</label>
+            <input type="text" id="expmonth" name="expmonth" placeholder="09" maxlength="2">
+            <span id="expMonthError" class="error-message"></span>
             <div class="row">
-              <div class="col-50">
-                <label for="expyear">Exp Year</label>
-                <input type="text" id="expyear" name="expyear" placeholder="2028">
-              </div>
-              <div class="col-50">
-                <label for="cvv">CVV</label>
-                <input type="text" id="cvv" name="cvv" placeholder="352">
-              </div>
+                <div class="col-50">
+                    <label for="expyear">Exp Year (YYYY)</label>
+                    <input type="text" id="expyear" name="expyear" placeholder="2028" maxlength="4">
+                    <span id="expYearError" class="error-message"></span>
+                </div>
+                <div class="col-50">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="352" maxlength="3">
+                    <span id="cvvError" class="error-message"></span>
+                </div>
             </div>
 
             <p>Amount to pay: $<span id="amount-to-pay">{{ price }}</span></p>
-    <input type="hidden" id="amount" name="amount" value="{{ price }}">
+            <input type="hidden" id="amount" name="amount" value="{{ price }}">
 
             <button type="submit" class="buy-now">Pay Now</button>
         </form>
     </main>
 
+    <script>
+        function validatePaymentForm() {
+            let isValid = true;
 
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = "");
+
+            // Name on Card validation
+            const cname = document.getElementById("cname").value.trim();
+            if (!cname.match(/^[a-zA-Z\s]+$/)) {
+                document.getElementById("nameError").textContent = "Name must contain only letters and spaces.";
+                isValid = false;
+            }
+
+            // Debit Card Number validation
+            const cardNumber = document.getElementById("debitCardNumber").value.trim();
+            if (!/^\d{16}$/.test(cardNumber)) {
+                document.getElementById("cardNumberError").textContent = "Card number must be 16 digits.";
+                isValid = false;
+            }
+
+            // Expiration Month validation
+            const expMonth = document.getElementById("expmonth").value.trim();
+            if (!/^(0[1-9]|1[0-2])$/.test(expMonth)) {
+                document.getElementById("expMonthError").textContent = "Invalid month. Must be between 01 and 12.";
+                isValid = false;
+            }
+
+            // Expiration Year validation
+            const expYear = document.getElementById("expyear").value.trim();
+            const currentYear = new Date().getFullYear();
+            if (!/^\d{4}$/.test(expYear) || parseInt(expYear) < currentYear) {
+                document.getElementById("expYearError").textContent = "Invalid year. Must be a future year.";
+                isValid = false;
+            }
+
+            // CVV validation
+            const cvv = document.getElementById("cvv").value.trim();
+            if (!/^\d{3}$/.test(cvv)) {
+                document.getElementById("cvvError").textContent = "CVV must be 3 digits.";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
 </body>
 </html>

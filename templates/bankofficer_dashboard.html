@@ -15,15 +15,15 @@
 
     <main>
         <section class="admin-actions">
-            <h2>Admin Actions</h2>
+            <h2>Bank Officer Actions</h2>
             <ul>
-                <li><a href="{{ url_for('manage_users') }}">Manage Users</a></li>
-                <li><a href="{{ url_for('view_transactions') }}">View Transactions</a></li>
-                <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li> <!-- New link for depositing money -->
-                <li><a href="{{ url_for('approve_users') }}">Approve Customers</a></li>
+    <li><a href="{{ url_for('manage_users') }}">Manage Users</a></li>
+    <li><a href="{{ url_for('view_transactions') }}">View Transactions</a></li>
+    <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li>
+    <li><a href="{{ url_for('approve_users') }}">Approve Customers</a></li>
+    <li><a href="{{ url_for('change_password') }}">Change Password</a></li> <!-- New Link -->
+</ul>
 
-                <!-- Add more admin-specific actions as needed -->
-            </ul>
         </section>
 
         <section class="admin-summary">

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-<link rel="stylesheet" href= "{{ url_for('static',filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
 </head>
 <body>
     <header>
         <h1>Admin Console</h1>
-    <h1>Welcome, {{ username }}!</h1>
-    <a href="{{ url_for('logout') }}"><button id="logout">Logout</button></a>
+        <h1>Welcome, {{ username }}!</h1>
+        <a href="{{ url_for('logout') }}"><button id="logout">Logout</button></a>
     </header>
 
     <main>
@@ -19,15 +19,16 @@
             <ul>
                 <li><a href="{{ url_for('manage_users') }}">Manage Users</a></li>
                 <li><a href="{{ url_for('view_transactions') }}">View Transactions</a></li>
-                <li><a href="{{ url_for('add_user') }}">Add Bank Officer or Admin</a></li>
-                <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li> <!-- New link for depositing money -->
+                {% if username == 'admin' %}
+                    <li><a href="{{ url_for('add_user') }}">Add Bank Officer</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('deposit_money') }}">Deposit Money</a></li>
                 <li><a href="{{ url_for('approve_users') }}">Approve Customers</a></li>
-
-                <!-- Add more admin-specific actions as needed -->
             </ul>
-                        <img src="{{ url_for('static', filename='admin.gif') }}" width="50%">
+            <img src="{{ url_for('static', filename='admin.gif') }}" width="50%">
         </section>
 
+        {% if username == 'admin' %}
         <section class="admin-summary">
             <h2>Admin Summary</h2>
             <div class="summary-item">
@@ -42,13 +43,9 @@
                 <h3>Total Transactions</h3>
                 <p>{{ total_transactions }}</p>
             </div>
-            <!-- Other summary items -->
         </section>
-
-
+        {% endif %}
     </main>
-
-    <!-- Admin-specific dashboard content here -->
 
     <script src="dashboard.js"></script> <!-- Link to your JavaScript file for interactivity -->
 </body>
